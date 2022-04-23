@@ -12,11 +12,11 @@ This gnome application allows one to assign a key (by default *F12*) that will u
  - pygtk
  - Xlib
 
-On Ubuntu, this is as easy as running ``sudo apt-get install python-setuptools python-gtk2 python-xlib``.
+On Ubuntu, this is as easy as running ``sudo apt-get install python3-setuptools python-gtk2 python3-xlib``.
 
 ## Installation
 
- 1. Run ``sudo python setup.py install``.
+ 1. Run ``sudo python3 setup.py install``.
  2. Run ``ptt``.
  
 If the application immediately closes with the message "You must log-out and log-in again for your system tray icon to appear.", log-out and log-back in again; a system settings change was required.
