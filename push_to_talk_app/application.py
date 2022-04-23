@@ -30,8 +30,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GObject, Gio, GLib, Gtk as gtk
 
-from interfaces import SkypeInterface, PulseAudioInterface
-from key_monitor import KeyMonitor
+from .interfaces import SkypeInterface, PulseAudioInterface
+from .key_monitor import KeyMonitor
 
 
 class PushToTalk(gtk.StatusIcon):
@@ -232,7 +232,7 @@ class PushToTalk(gtk.StatusIcon):
                         <menuitem action="SetKey"/>
                         <separator/>
             """
-        for audio_source_verb, audio_item in audio_xml.items():
+        for audio_source_verb, audio_item in list(audio_xml.items()):
             if self.audio_interface.verb == audio_source_verb:
                 del(audio_xml[audio_source_verb])
         end_xml = """

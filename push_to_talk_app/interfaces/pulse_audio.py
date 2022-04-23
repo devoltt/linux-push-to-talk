@@ -26,15 +26,17 @@ __all__ = ['PulseAudioInterface', ]
 class PulseAudioInterface(object):
     verb = "Mute for all applications"
 
-    INPUTS = {}
+    INPUTS = []
 
     def __init__(self):
         self.logger = logging.getLogger('push_to_talk_app.interfaces.pulse_audio')
         super(PulseAudioInterface, self).__init__()
         self.update_input_list()
+        self.mute()
+
 
     def update_input_list(self):
-        self.INPUTS = {}
+        self.INPUTS = []
 
         proc = subprocess.Popen(
                 [
@@ -46,38 +48,38 @@ class PulseAudioInterface(object):
                 stdout = subprocess.PIPE
             )
         out, err = proc.communicate()
-        input_lines = out.split('\n')
+        input_lines = out.split(b'\n')
         for input_line in input_lines:
             input_line = input_line.strip()
             if not input_line:
                 break
 
-            details = input_line.split('\t')
+            details = input_line.split(b'\t')
 
-            index = details[0]
             parsed = {
                         'name': details[1],
                         'module': details[2],
                         'sound': details[3],
                         'status': details[4],
                     }
+
             self.logger.debug("Found device %s" % parsed['name'])
-            self.INPUTS[index] = parsed
+            self.INPUTS.append(parsed)
 
     def mute(self):
-        for index in self.INPUTS.keys():
+        for device in list(self.INPUTS):
             subprocess.call([
                     'pactl',
                     'set-source-mute',
-                    str(index),
+                    str(device['name'].decode('utf-8')),
                     '1',
                 ])
 
     def unmute(self):
-        for index in self.INPUTS.keys():
-            retval = subprocess.call([
+        for device in list(self.INPUTS):
+            subprocess.call([
                     'pactl',
                     'set-source-mute',
-                    str(index),
+                    str(device['name'].decode('utf-8')),
                     '0',
                 ])

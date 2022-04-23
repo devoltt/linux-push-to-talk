@@ -100,9 +100,9 @@ class KeyMonitor(object):
 
     def print_action(self, key, action):
         if action == KeyMonitor.RELEASE:
-            print "\n%s RELEASE" % key
+            print("\n%s RELEASE" % key)
         elif action == KeyMonitor.PRESS:
-            print "\n%s PRESS" % key
+            print("\n%s PRESS" % key)
 
     def start(self):
         self.ctx = self.record_dpy.record_create_context(
@@ -128,7 +128,7 @@ class KeyMonitor(object):
             return
         if reply.client_swapped:
             return
-        if not len(reply.data) or ord(reply.data[0]) < 2:
+        if not len(reply.data) or ord(str(reply.data[0])) < 2:
             # not an event
             return
         data = reply.data

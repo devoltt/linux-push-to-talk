@@ -1,2 +1,2 @@
-from skype import *
-from pulse_audio import *
+from .skype import *
+from .pulse_audio import *
